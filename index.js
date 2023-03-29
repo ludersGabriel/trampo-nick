@@ -29,6 +29,10 @@ const createGarbage = (li) => {
   garbageImg.src = './delete.png'
 
   garbageImg.onclick = () => {
+    const r = confirm('Tem certeza que deseja excluir essa mecanica?')
+
+    if (!r) return
+
     li.remove()
     saveList()
   }
