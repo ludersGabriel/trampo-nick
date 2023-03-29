@@ -1,0 +1,86 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+  list-style-type: none;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f5f5f5;
+
+  display: grid;
+  grid-template-areas: 
+    "header" 
+    "main" 
+    "footer";
+
+  grid-template-rows: auto 1fr auto;
+
+  width: 100vw;
+  height: 100vh;
+
+}
+
+header {
+  grid-area: header;
+}
+
+main {
+  grid-area: main;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 2rem;
+}
+
+footer {
+  grid-area: footer;
+}
+
+input {
+  padding: 10px;
+}
+
+#mecanicas {
+  display: flex;
+
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+#mecanicas-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.liMecanica {
+  padding: 10px;
+  background-color: red;
+  color: white;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+
+}
+
+.liMecanica img {
+  width: 20px;
+  height: 20px;
+}
+
+.checked {
+  background-color: green;
+}
