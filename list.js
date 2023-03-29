@@ -1,18 +1,32 @@
 
+import { chooseMecanic } from './randomizer.js'
+import resultManager from './results.js'
+import saver from './saver.js'
+
 class List {
   itens = []
   name = ''
   howManyToUse = 0
   li = null
   ulItens = null
+  result = []
 
   constructor(
     name,
-    itens = []
+    itens = [],
+    howManyToUse = 0,
+    result = []
   ) {
     this.name = name
     this.itens = itens
+    this.howManyToUse = howManyToUse
+    this.result = result
+
     this.li = this.createLi()
+
+    this.itens.forEach((item) => {
+      this.ulItens.appendChild(this.createItem(item.name, item.selected))
+    })
   }
 
   createLi = () => {
@@ -51,7 +65,7 @@ class List {
     input.onchange = (e) => {
       this.howManyToUse = e.target.value
 
-      console.log(this.howManyToUse)
+      saver.save()
     }
 
     input.oninput = (e) => {
@@ -70,19 +84,61 @@ class List {
     icon.className = 'moreItensIcon'
 
     icon.onclick = () => {
-      const item = prompt('Digite o nome do item')
+      const item = prompt('Type the name of the item')
 
       if (!item) return
 
-      this.itens.push(item)
+      const exists = this.itens.find((item) => item.name === item)
 
-      const li = document.createElement('li')
-      li.innerHTML = item
-      li.className = 'liItem'
+      if (exists) {
+        alert('Item already exists')
+        return
+      }
 
-      this.ulItens.appendChild(li)
+      this.ulItens.appendChild(this.createItem(item))
+
+      this.itens.push({
+        name: item,
+        selected: false
+      })
+
+      saver.save()
     }
     return icon
+  }
+
+  createItem = (name, selected = false) => {
+    const li = document.createElement('li')
+    li.className = 'liItem'
+
+    if (selected) li.classList.add('selected')
+
+    const p = document.createElement('p')
+    p.innerHTML = name
+
+    const deleteIcon = this.createItemDelete(li)
+
+    li.appendChild(p)
+    li.appendChild(deleteIcon)
+
+    li.onclick = () => {
+      const index = this.itens.findIndex((item) => item.name === name)
+
+      if (li.classList.contains('selected')) {
+        li.classList.remove('selected')
+
+        this.itens[index].selected = false
+      }
+      else {
+        li.classList.add('selected')
+
+        this.itens[index].selected = true
+      }
+
+      saver.save()
+    }
+
+    return li
   }
 
   createUlItens = () => {
@@ -96,20 +152,56 @@ class List {
     return ul
   }
 
+  createItemDelete = (ref) => {
+    const icon = this.createGarbageIcon()
+
+    icon.onclick = (e) => {
+      e.stopPropagation()
+
+      const r = confirm('Are you sure you want to delete this item?')
+
+      if (!r) return
+
+      ref.remove()
+
+      saver.save()
+    }
+
+    return icon
+  }
+
   createLiDelete = () => {
-    const icon = document.createElement('img')
-    icon.src = './delete.png'
-    icon.className = 'deleteListIcon'
+    const icon = this.createGarbageIcon()
 
     icon.onclick = () => {
-      const r = confirm('Tem certeza que deseja excluir essa lista?')
+      const r = confirm('Are you sure you want to delete this list?')
 
       if (!r) return
 
       this.li.remove()
+
+      saver.save()
+      saver.removeList(this)
+      resultManager.removeList(this)
     }
 
     return icon
+  }
+
+  createGarbageIcon = () => {
+    const icon = document.createElement('img')
+    icon.src = './delete.png'
+    icon.className = 'deleteListIcon'
+
+    return icon
+  }
+
+  randomize = (randomizeAll = false) => {
+    this.result = chooseMecanic(this, randomizeAll)
+
+    saver.save()
+
+    return this.result
   }
 
 }

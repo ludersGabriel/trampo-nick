@@ -10,23 +10,36 @@
   </head>
   <body>
     <header>
-      <p>hello from header</p>
+      <img src="./praise.png" alt="praise" class="praiseImg" />
+      <p>Astora</p>
     </header>
     <main>
-      <form id="formCreateList">
-        <input
-          autofocus
-          type="text"
-          id="inputCreateList"
-          placeholder="List name"
-        />
-        <button id="btnCreateList">New List</button>
-      </form>
+      <section class="listSection">
+        <form id="formCreateList">
+          <input
+            autofocus
+            type="text"
+            id="inputCreateList"
+            placeholder="List name"
+          />
+          <button id="btnCreateList">New List</button>
+        </form>
 
-      <ul class="mainUlLists" id="ulLists"></ul>
+        <ul class="mainUlLists" id="ulLists"></ul>
+      </section>
+      <section class="resultsSection">
+        <div class="results" id="results">
+          <h1>Results</h1>
+          <ul class="ulResults" id="ulResults"></ul>
+        </div>
+        <button id="randomizeAll">Randomize all</button>
+      </section>
     </main>
     <footer>
-      <p>hello from footer</p>
+      <p>Gabriel Lüders</p>
+      <a href="https://github.com/ludersGabriel" target="_blank">
+        <img src="github.png" alt="github" class="githubImg" />
+      </a>
     </footer>
   </body>
 </html>
