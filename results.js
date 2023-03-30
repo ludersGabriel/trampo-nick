@@ -109,7 +109,7 @@ class Result {
       if (this.result[listName].length === 0) {
         const p = document.createElement('p')
         p.innerHTML = 'Nenhum resultado gerado'
-        p.className = `noResult-${listName}`
+        p.className = 'noResult'
 
         divResult.appendChild(p)
       }
