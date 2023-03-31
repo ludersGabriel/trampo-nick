@@ -16,13 +16,12 @@ class Saver {
 
     const lists = [...mainUl.querySelectorAll('li.liList')]
 
-    const results = [...document.getElementById('ulResults').querySelectorAll('li.liResult')]
-
     this.data['mainUlLists'] = lists.map((li) => {
       const list = {
         name: li.children[0].children[0].innerHTML,
         howManyToUse: li.children[0].children[1].value,
         result: this.lists.find((l) => l.name === li.children[0].children[0].innerHTML).result,
+        checked: this.lists.find((l) => l.name === li.children[0].children[0].innerHTML).checked,
         itens: []
       }
 
@@ -66,7 +65,13 @@ class Saver {
     const mainUl = document.getElementById('ulLists')
 
     this.data.mainUlLists.forEach((list) => {
-      const newList = new List(list.name, list.itens, list.howManyToUse, list.result)
+      const newList = new List(
+        list.name,
+        list.itens,
+        list.howManyToUse,
+        list.result,
+        list.checked
+      )
 
       this.lists.push(newList)
 

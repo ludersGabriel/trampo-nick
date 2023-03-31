@@ -10,23 +10,28 @@ class List {
   li = null
   ulItens = null
   result = []
+  checked = false
 
   constructor(
     name,
     itens = [],
     howManyToUse = 0,
-    result = []
+    result = [],
+    checked = false
   ) {
     this.name = name
     this.itens = itens
     this.howManyToUse = howManyToUse
     this.result = result
+    this.checked = checked
 
     this.li = this.createLi()
 
     this.itens.forEach((item) => {
       this.ulItens.appendChild(this.createItem(item.name, item.selected))
     })
+
+    this.updateRender()
   }
 
   createLi = () => {
@@ -45,15 +50,65 @@ class List {
 
     const deleteIcon = this.createLiDelete()
 
+    const checkbox = this.craeteLiCheckbox()
+
     div.appendChild(p)
     div.appendChild(input)
     div.appendChild(deleteIcon)
+    div.appendChild(checkbox)
 
     li.appendChild(div)
     li.appendChild(this.createUlItens())
     li.appendChild(this.createMoreItensIcon())
 
+    if (this.checked) {
+      li.classList.add('checked')
+    } else li.classList.add('unchecked')
+
     return li
+  }
+
+  craeteLiCheckbox = () => {
+    const checkbox = document.createElement('input')
+    checkbox.type = 'checkbox'
+    checkbox.className = 'listCheckbox'
+
+    if (this.checked) {
+      checkbox.checked = true
+    }
+
+    checkbox.onclick = () => {
+      if (checkbox.checked) {
+        this.li.classList.add('checked')
+        this.li.classList.remove('unchecked')
+        this.checked = true
+      }
+      else {
+        this.li.classList.remove('checked')
+        this.li.classList.add('unchecked')
+        this.checked = false
+      }
+
+      this.updateRender()
+      saver.save()
+      resultManager.updateResult(this)
+    }
+
+    return checkbox
+  }
+
+  updateRender = () => {
+    const ul = this.li.querySelector('ul.ulItens')
+    const plus = this.li.querySelector('img.moreItensIcon')
+
+    if (!this.checked) {
+      ul.style.display = 'none'
+      plus.style.display = 'none'
+    }
+    else {
+      ul.style.display = 'flex'
+      plus.style.display = 'block'
+    }
   }
 
   createHowManyInput = () => {

@@ -66,6 +66,12 @@ class Result {
     this.render()
   }
 
+  updateResult = (list) => {
+    this.result[list.name] = list.result
+
+    this.render()
+  }
+
   removeList = (list) => {
     this.reusltsLi = this.reusltsLi.filter((li) => {
       const listName = li.querySelector('p').innerHTML
@@ -83,7 +89,10 @@ class Result {
 
     try {
       saver.lists.forEach((list) => {
-        results[list.name] = list.randomize(true)
+        console.log(`randomizing ${list.name}: ${list.checked}`)
+
+        if (list.checked)
+          results[list.name] = list.randomize(true)
       })
 
       this.result = results
@@ -101,10 +110,17 @@ class Result {
     this.ulResults.innerHTML = ''
 
     this.reusltsLi.forEach((li) => {
+
       const divResult = li.querySelector('.resultContainer')
       divResult.innerHTML = ''
 
       const listName = li.querySelector('p').innerHTML
+
+      if (
+        saver.lists.find(
+          (list) => list.name === listName
+        ).checked === false
+      ) return
 
       if (this.result[listName].length === 0) {
         const p = document.createElement('p')
